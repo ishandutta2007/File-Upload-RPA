@@ -1,8 +1,8 @@
 """Version determination for file-upload-rpa."""
 
+import re
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
-import re
 
 
 def _get_version():

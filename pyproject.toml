@@ -47,3 +47,12 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 file_upload_rpa = ["assets/*.png", "py.typed"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "RUF"]
+ignore = ["E402", "E501"]
+

@@ -1,11 +1,11 @@
 import os
-from pathlib import Path
 import sys
 import time
+from pathlib import Path
 
-from colorama import Fore, Style, init
 import pyautogui
 import pygetwindow as gw
+from colorama import Fore, Style, init
 
 # Initialize colorama for Windows console support
 init(autoreset=True)

@@ -11,11 +11,11 @@ from file_upload_rpa.uploader import (
 )
 
 __all__ = [
+    "DEFAULT_BUTTONS",
+    "DEFAULT_FILE_PATH",
     "__version__",
+    "focus_edge_window",
+    "get_default_buttons",
     "main",
     "vision_upload_flow",
-    "focus_edge_window",
-    "DEFAULT_FILE_PATH",
-    "DEFAULT_BUTTONS",
-    "get_default_buttons",
 ]
