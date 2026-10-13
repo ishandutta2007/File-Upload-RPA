@@ -100,21 +100,21 @@ def vision_upload_flow():
             return
         time.sleep(4)
 
-    # # ----------------------------------------------------
-    # # STEP 2: Interact with the OS File Dialogue Window
-    # # ----------------------------------------------------
-    # # Pause to allow the file manager dialog box to open up completely
-    # time.sleep(2) 
+    # ----------------------------------------------------
+    # STEP 2: Interact with the OS File Dialogue Window
+    # ----------------------------------------------------
+    # Pause to allow the file manager dialog box to open up completely
+    time.sleep(2) 
 
-    # print(f"Typing file path: {FILE_PATH}")
-    # # Type out the absolute file path into the file dialog's active filename input field
-    # pyautogui.write(FILE_PATH, interval=0.01)
-    # time.sleep(0.5)
+    print(f"Typing file path: {FILE_PATH}")
+    # Type out the absolute file path into the file dialog's active filename input field
+    pyautogui.write(FILE_PATH, interval=0.01)
+    time.sleep(0.5)
 
-    # # Press 'enter' to confirm and close the file dialogue box, submitting the file
-    # print("Pressing Enter to select file...")
-    # pyautogui.press('enter')
-    # print("Upload automation flow completed successfully!")
+    # Press 'enter' to confirm and close the file dialogue box, submitting the file
+    print("Pressing Enter to select file...")
+    pyautogui.press('enter')
+    print("Upload automation flow completed successfully!")
 
 if __name__ == "__main__":
     vision_upload_flow()
