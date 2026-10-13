@@ -67,10 +67,13 @@ if windows:
     win.activate()  # Bring to front
     log_info("Focused Microsoft Edge window.", indent=2)
 
+
 def vision_upload_flow():
     print("Starting vision-based automation...")
     print("Please ensure the browser window is visible on your screen.")
-    time.sleep(3) # Give yourself 3 seconds to switch focus to the target screen if needed
+    time.sleep(
+        3
+    )  # Give yourself 3 seconds to switch focus to the target screen if needed
 
     # Ensure the upload file exists locally before running
     if not os.path.exists(FILE_PATH):
@@ -82,21 +85,25 @@ def vision_upload_flow():
     # ----------------------------------------------------
     print("Searching for the upload button on screen...")
 
-    buttons = ["upload_button1.png", "upload_button2.png"] 
+    buttons = ["upload_button1.png", "upload_button2.png"]
 
     for i in range(2):
         try:
             btn_location = pyautogui.locateOnScreen(buttons[i], confidence=0.8)
             if btn_location is None:
-                raise pyautogui.ImageNotFoundException                
+                raise pyautogui.ImageNotFoundException
             print(f"Button found at: {btn_location}")
             btn_center = pyautogui.center(btn_location)
             pyautogui.click(btn_center)
             print(f"Clicked button {i}.{buttons[i]}.")
 
         except (pyautogui.ImageNotFoundException, TypeError):
-            print(f"Error: Could not find the button {i}.{buttons[i]} image on the screen.")
-            print("Make sure the button is completely visible and looks identical to your template image.")
+            print(
+                f"Error: Could not find the button {i}.{buttons[i]} image on the screen."
+            )
+            print(
+                "Make sure the button is completely visible and looks identical to your template image."
+            )
             return
         time.sleep(4)
 
@@ -104,7 +111,7 @@ def vision_upload_flow():
     # STEP 2: Interact with the OS File Dialogue Window
     # ----------------------------------------------------
     # Pause to allow the file manager dialog box to open up completely
-    time.sleep(2) 
+    time.sleep(2)
 
     print(f"Typing file path: {FILE_PATH}")
     # Type out the absolute file path into the file dialog's active filename input field
@@ -113,8 +120,9 @@ def vision_upload_flow():
 
     # Press 'enter' to confirm and close the file dialogue box, submitting the file
     print("Pressing Enter to select file...")
-    pyautogui.press('enter')
+    pyautogui.press("enter")
     print("Upload automation flow completed successfully!")
+
 
 if __name__ == "__main__":
     vision_upload_flow()
