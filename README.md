@@ -385,7 +385,7 @@ PyPI Trusted Publishing allows GitHub Actions to publish without storing long-li
      - **Owner:** `ishandutta2007`
      - **Repository name:** `File-Upload-RPA` (match exact GitHub casing)
      - **Workflow name:** `publish.yml`
-     - **Environment name:** `pypi`
+     - **Environment name:** *(leave completely blank)*
 4. Click **Add publisher**. No GitHub Secrets are needed! The workflow automatically uses GitHub's OpenID Connect (`id-token: write`).
 
 #### Option B: PyPI API Token via GitHub Secrets
