@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.svg" alt="File-Upload-RPA Banner" width="100%" />
+</p>
+
 # File-Upload-RPA 🚀
 
 Automated, vision-based file upload package and CLI tool for desktop RPA using **PyAutoGUI**, **PyGetWindow**, and Computer Vision.
