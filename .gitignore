@@ -7,3 +7,12 @@ __pycache__/
 contributors.txt
 node_modules
 temp_repo_clone
+
+# Python packaging & virtual environments
+build/
+dist/
+*.egg-info/
+.venv/
+env/
+venv/
+*.pyc

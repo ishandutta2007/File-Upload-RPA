@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "file-upload-rpa"
+version = "0.1.0"
+description = "Automated vision-based file upload CLI and library using PyAutoGUI and PyGetWindow."
+readme = "README.md"
+authors = [
+    { name = "Ishan Dutta", email = "ishandutta2007@gmail.com" }
+]
+license = { text = "MIT" }
+requires-python = ">=3.8"
+keywords = ["rpa", "pyautogui", "automation", "file-upload", "computer-vision"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "PyAutoGUI>=0.9.54",
+    "PyGetWindow>=0.0.9",
+    "colorama>=0.4.6",
+    "opencv-python>=4.8.0",
+    "Pillow>=9.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/ishandutta2007/file-upload-rpa"
+Repository = "https://github.com/ishandutta2007/file-upload-rpa"
+Issues = "https://github.com/ishandutta2007/file-upload-rpa/issues"
+
+[project.scripts]
+file-upload-rpa = "file_upload_rpa.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+file_upload_rpa = ["assets/*.png", "py.typed"]

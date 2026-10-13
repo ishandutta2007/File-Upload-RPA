@@ -1,170 +1,36 @@
-import argparse
-import time
-import os
+"""Backward compatibility runner for file-upload-RPA."""
+
+from pathlib import Path
 import sys
-import pyautogui
-import pygetwindow as gw
-from colorama import init, Fore, Style
 
-# Initialize colorama for Windows console support
-init(autoreset=True)
+# Ensure src/ package is resolvable when executing directly from source tree
+SRC_DIR = Path(__file__).resolve().parent / "src"
+if SRC_DIR.exists() and str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
 
-# ANSI Styling helper constants & icons
-ICON_ROCKET = "🚀"
-ICON_GEAR = "⚙️"
-ICON_CHECK = "✅"
-ICON_WARN = "⚠️"
-ICON_WAIT = "⏳"
-ICON_STOP = "🛑"
-ICON_FILE = "📄"
-ICON_KEY = "🔑"
-ICON_TERMINAL = "🖥️"
-
-C_CYAN = Fore.CYAN + Style.BRIGHT
-C_GREEN = Fore.GREEN + Style.BRIGHT
-C_YELLOW = Fore.YELLOW + Style.BRIGHT
-C_RED = Fore.RED + Style.BRIGHT
-C_MAGENTA = Fore.MAGENTA + Style.BRIGHT
-C_BLUE = Fore.BLUE + Style.BRIGHT
-C_WHITE = Fore.WHITE + Style.BRIGHT
-C_DIM = Style.DIM
-RESET = Style.RESET_ALL
-
-
-def log_info(msg, indent=0):
-    prefix = "  " * indent + f"{C_BLUE}[INFO]{RESET} "
-    print(f"{prefix}{msg}")
-
-
-def log_success(msg, indent=0):
-    prefix = "  " * indent + f"{C_GREEN}[{ICON_CHECK} SUCCESS]{RESET} "
-    print(f"{prefix}{msg}")
-
-
-def log_warn(msg, indent=0):
-    prefix = "  " * indent + f"{C_YELLOW}[{ICON_WARN} WARNING]{RESET} "
-    print(f"{prefix}{msg}")
-
-
-def log_wait(msg, indent=0):
-    prefix = "  " * indent + f"{C_MAGENTA}[{ICON_WAIT} WAITING]{RESET} "
-    print(f"{prefix}{msg}")
-
-
-def log_step(step_name, indent=0):
-    prefix = "  " * indent + f"{C_WHITE}{Style.BRIGHT}━━━ {step_name} ━━━{RESET}"
-    print(f"\n{prefix}")
-
-
-# --- CONFIGURE YOUR PATHS ---
-DEFAULT_FILE_PATH = os.path.join(os.getcwd(), "assets", "social-preview.gif")
-DEFAULT_BUTTONS = ["upload_button1.png", "upload_button2.png"]
-
-parser = argparse.ArgumentParser(description="Vision-based file upload automation.")
-parser.add_argument(
-    "file_path",
-    nargs="?",
-    default=None,
-    help="Path to the file to upload (default: <cwd>\\assets\\social-preview.gif)",
-)
-parser.add_argument(
-    "buttons",
-    nargs="*",
-    default=None,
-    help="Paths to button template images to click in sequence (default: upload_button1.png upload_button2.png)",
-)
-parser.add_argument(
-    "-f",
-    "--file",
-    dest="file_opt",
-    default=None,
-    help="Path to the file to upload",
-)
-parser.add_argument(
-    "-b",
-    "--buttons",
-    dest="buttons_opt",
-    nargs="+",
-    default=None,
-    help="Paths to button template images to click in sequence",
+from file_upload_rpa.cli import main, parse_arguments  # noqa: E402
+from file_upload_rpa.uploader import (  # noqa: E402
+    DEFAULT_BUTTONS,
+    DEFAULT_FILE_PATH,
+    focus_edge_window,
+    vision_upload_flow,
 )
 
-args, _ = parser.parse_known_args()
-
-# 1. Path to the file you want to upload
-FILE_PATH = args.file_opt or args.file_path or DEFAULT_FILE_PATH
-
-# 2. Paths to button template images to click
-BUTTON_PATHS = (
-    args.buttons_opt or (args.buttons if args.buttons else None) or DEFAULT_BUTTONS
-)
+# Retain backward compatibility variables for scripts inspecting module attributes
+FILE_PATH, BUTTON_PATHS = parse_arguments()
 BUTTONS = BUTTON_PATHS
 
-windows = gw.getWindowsWithTitle("Edge")
-if windows:
-    win = windows[0]
-    if win.isMinimized:
-        win.restore()  # Un-minimize if minimized
-    win.activate()  # Bring to front
-    log_info("Focused Microsoft Edge window.", indent=2)
-
-
-def vision_upload_flow(file_path=None, buttons=None):
-    if file_path is None:
-        file_path = FILE_PATH
-    if buttons is None:
-        buttons = BUTTON_PATHS
-
-    print("Starting vision-based automation...")
-    print("Please ensure the browser window is visible on your screen.")
-    time.sleep(
-        3
-    )  # Give yourself 3 seconds to switch focus to the target screen if needed
-
-    # Ensure the upload file exists locally before running
-    if not os.path.exists(file_path):
-        print(f"Error: Target file not found at {file_path}")
-        sys.exit(1)
-
-    # ----------------------------------------------------
-    # STEP 1: Find and Click the Upload Button via Vision
-    # ----------------------------------------------------
-    print("Searching for the upload button on screen...")
-
-    for i, button in enumerate(buttons):
-        try:
-            btn_location = pyautogui.locateOnScreen(button, confidence=0.8)
-            if btn_location is None:
-                raise pyautogui.ImageNotFoundException
-            print(f"Button found at: {btn_location}")
-            btn_center = pyautogui.center(btn_location)
-            pyautogui.click(btn_center)
-            print(f"Clicked button {i}.{button}.")
-
-        except (pyautogui.ImageNotFoundException, TypeError):
-            print(f"Error: Could not find the button {i}.{button} image on the screen.")
-            print(
-                "Make sure the button is completely visible and looks identical to your template image."
-            )
-            return
-        time.sleep(4)
-
-    # ----------------------------------------------------
-    # STEP 2: Interact with the OS File Dialogue Window
-    # ----------------------------------------------------
-    # Pause to allow the file manager dialog box to open up completely
-    time.sleep(4)
-
-    print(f"Typing file path: {file_path}")
-    # Type out the absolute file path into the file dialog's active filename input field
-    pyautogui.write(file_path, interval=0.01)
-    time.sleep(0.5)
-
-    # Press 'enter' to confirm and close the file dialogue box, submitting the file
-    print("Pressing Enter to select file...")
-    pyautogui.press("enter")
-    print("Upload automation flow completed successfully!")
-
+__all__ = [
+    "BUTTON_PATHS",
+    "BUTTONS",
+    "DEFAULT_BUTTONS",
+    "DEFAULT_FILE_PATH",
+    "FILE_PATH",
+    "focus_edge_window",
+    "main",
+    "parse_arguments",
+    "vision_upload_flow",
+]
 
 if __name__ == "__main__":
-    vision_upload_flow()
+    sys.exit(main())
