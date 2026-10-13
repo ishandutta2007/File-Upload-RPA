@@ -57,7 +57,11 @@ def log_step(step_name, indent=0):
 
 # --- CONFIGURE YOUR PATHS ---
 # 1. Path to the file you want to upload
-FILE_PATH = r"C:\Users\ishan\Documents\Projects\Awesome-Event-Driven-Component-Framework\assets\social-preview.gif"
+FILE_PATH = (
+    sys.argv[1]
+    if len(sys.argv) > 1
+    else os.path.join(os.getcwd(), "assets", "social-preview.gif")
+)
 
 windows = gw.getWindowsWithTitle("Edge")
 if windows:
@@ -111,7 +115,7 @@ def vision_upload_flow():
     # STEP 2: Interact with the OS File Dialogue Window
     # ----------------------------------------------------
     # Pause to allow the file manager dialog box to open up completely
-    time.sleep(2)
+    time.sleep(4)
 
     print(f"Typing file path: {FILE_PATH}")
     # Type out the absolute file path into the file dialog's active filename input field
