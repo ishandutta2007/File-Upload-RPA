@@ -4,6 +4,16 @@
 
 # File-Upload-RPA 🚀
 
+<p align="center">
+  <a href="https://github.com/ishandutta2007/Awesome-Awesome-Awesome"><img src="https://img.shields.io/badge/Awesome-%E2%9C%94-blueviolet?style=flat-square&logo=github" alt="Awesome"/></a><a href="https://discord.gg/jc4xtF58Ve"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord" /></a>
+  <a href="https://pypi.org/project/file-upload-rpa/"><img src="https://img.shields.io/pypi/v/file-upload-rpa.svg" alt="PyPI version"/></a>
+  <a href="https://pypi.org/project/file-upload-rpa/"><img src="https://img.shields.io/pypi/pyversions/file-upload-rpa.svg" alt="Python versions"/></a>
+  <a href="https://github.com/ishandutta2007/File-Upload-RPA/actions/workflows/ci.yml"><img src="https://github.com/ishandutta2007/File-Upload-RPA/actions/workflows/ci.yml/badge.svg" alt="CI Status"/></a>
+  <a href="https://github.com/ishandutta2007/File-Upload-RPA/blob/main/LICENSE"><img src="https://img.shields.io/github/license/ishandutta2007/File-Upload-RPA.svg" alt="License"/></a>
+  <a href="https://github.com/astral-sh/ruff"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" alt="Ruff"/></a>
+  <a href="https://github.com/ishandutta2007"><img alt="GitHub followers" src="https://img.shields.io/github/followers/ishandutta2007?label=Follow" /></a>
+</p>
+
 Automated, vision-based file upload package and CLI tool for desktop RPA using **PyAutoGUI**, **PyGetWindow**, and Computer Vision.
 
 This tool brings Microsoft Edge to the foreground, locates upload button templates on the screen using computer vision (confidence-based template matching), clicks through an arbitrary sequence of buttons (such as dialog triggers, file choose buttons, etc.), and automatically types in the file path to complete the file manager upload flow.
@@ -12,49 +22,53 @@ This tool brings Microsoft Edge to the foreground, locates upload button templat
 
 ## 📑 Table of Contents
 
-- [Features](#features)
-- [Architecture & Workflow](#architecture--workflow)
+- [✨ Features](#features)
+- [🏗️ Architecture & Workflow](#architecture--workflow)
 - [👤 1. User Guide](#-1-user-guide)
-  - [Installation](#installation)
-  - [CLI Reference](#cli-reference)
-  - [Usage Examples](#usage-examples)
-  - [Python Library API](#python-library-api)
-  - [Tips for Vision Matching](#tips-for-vision-matching)
-  - [Troubleshooting](#troubleshooting)
+  - [📦 Installation](#installation)
+  - [💻 CLI Reference](#cli-reference)
+  - [💡 Usage Examples](#usage-examples)
+  - [🐍 Python Library API](#python-library-api)
+  - [🎯 Tips for Vision Matching](#tips-for-vision-matching)
+  - [🔍 Troubleshooting](#troubleshooting)
 - [🛠️ 2. Developer & Contributor Guide](#️-2-developer--contributor-guide)
-  - [Prerequisites](#prerequisites)
-  - [Setting Up Local Development](#setting-up-local-development)
-  - [Project Layout](#project-layout)
-  - [Code Quality & Linting](#code-quality--linting)
-  - [Testing Locally](#testing-locally)
-  - [Contributing Flow](#contributing-flow)
+  - [📋 Prerequisites](#prerequisites)
+  - [💻 Setting Up Local Development](#setting-up-local-development)
+  - [📂 Project Layout](#project-layout)
+  - [🧹 Code Quality & Linting](#code-quality--linting)
+  - [🧪 Testing Locally](#testing-locally)
+  - [🤝 Contributing Flow](#contributing-flow)
 - [🚀 3. Package Publisher & DevOps Guide](#-3-package-publisher--devops-guide)
-  - [Automated PyPI Publishing Overview](#automated-pypi-publishing-overview)
-  - [How Automated Version Publishing Works](#how-automated-version-publishing-works)
-  - [Configuring PyPI Authentication](#configuring-pypi-authentication)
-    - [Option A: Trusted Publishing via OIDC (Recommended)](#option-a-trusted-publishing-via-oidc-recommended)
-    - [Option B: PyPI API Token via GitHub Secrets](#option-b-pypi-api-token-via-github-secrets)
-  - [Step-by-Step Release Process](#step-by-step-release-process)
-  - [Manual Workflow Dispatch](#manual-workflow-dispatch)
-  - [Manual Local Publishing](#manual-local-publishing)
-- [License](#license)
+  - [🔄 Automated PyPI Publishing Overview](#automated-pypi-publishing-overview)
+  - [⚙️ How Automated Version Publishing Works](#how-automated-version-publishing-works)
+  - [🔐 Configuring PyPI Authentication](#configuring-pypi-authentication)
+    - [🛡️ Option A: Trusted Publishing via OIDC (Recommended)](#option-a-trusted-publishing-via-oidc-recommended)
+    - [🔑 Option B: PyPI API Token via GitHub Secrets](#option-b-pypi-api-token-via-github-secrets)
+  - [📝 Step-by-Step Release Process](#step-by-step-release-process)
+  - [⚡ Manual Workflow Dispatch](#manual-workflow-dispatch)
+  - [🖥️ Manual Local Publishing](#manual-local-publishing)
+- [⭐ Star History](#star-history)
+- [💖 Support & Community](#support)
+- [📄 License](#license)
 
 ---
 
-## Features
+<a id="features"></a>
+## ✨ Features
 
-- **CLI Tool:** Runs directly from your terminal as `file-upload-rpa` after installation.
-- **Window Management:** Automatically detects, un-minimizes, and focuses Microsoft Edge.
-- **Vision-Based Template Matching:** Locates buttons on screen with 80% confidence (`confidence=0.8`).
-- **Arbitrary Button Sequences:** Supports 1, 2, or any number of sequential button clicks for complex upload wizards.
-- **Bundled Assets:** Default button templates are packaged inside the wheel so defaults work anywhere on your machine.
-- **Flexible Argument Parsing:** Accepts paths as positional arguments or named flags (`-f`/`--file`, `-b`/`--buttons`).
-- **OS File Dialogue Automation:** Automatically types absolute file paths into the native dialog and confirms.
-- **Continuous Integration & Auto-Publishing:** Full GitHub Actions suite with automatic PyPI deployment on version increment.
+- 🖥️ **CLI Tool:** Runs directly from your terminal as `file-upload-rpa` after installation.
+- 🪟 **Window Management:** Automatically detects, un-minimizes, and focuses Microsoft Edge.
+- 👁️ **Vision-Based Template Matching:** Locates buttons on screen with 80% confidence (`confidence=0.8`).
+- 🔁 **Arbitrary Button Sequences:** Supports 1, 2, or any number of sequential button clicks for complex upload wizards.
+- 📦 **Bundled Assets:** Default button templates are packaged inside the wheel so defaults work anywhere on your machine.
+- 🎛️ **Flexible Argument Parsing:** Accepts paths as positional arguments or named flags (`-f`/`--file`, `-b`/`--buttons`).
+- 📁 **OS File Dialogue Automation:** Automatically types absolute file paths into the native dialog and confirms.
+- 🚀 **Continuous Integration & Auto-Publishing:** Full GitHub Actions suite with automatic PyPI deployment on version increment.
 
 ---
 
-## Architecture & Workflow
+<a id="architecture--workflow"></a>
+## 🏗️ Architecture & Workflow
 
 ```mermaid
 flowchart TD
@@ -79,7 +93,8 @@ flowchart TD
 
 This section is for users who want to install and use `file-upload-rpa` to automate file uploads on their Windows desktop.
 
-### Installation
+<a id="installation"></a>
+### 📦 Installation
 
 Install the latest release directly from [PyPI](https://pypi.org/project/file-upload-rpa/):
 
@@ -93,9 +108,10 @@ Or install the latest development branch directly from GitHub:
 pip install git+https://github.com/ishandutta2007/file-upload-rpa.git
 ```
 
-> **Requirements:** Windows 10/11, Python 3.8+, and Microsoft Edge. Recommended Windows Display Scaling set to 100%.
+> 💡 **Requirements:** Windows 10/11, Python 3.8+, and Microsoft Edge. Recommended Windows Display Scaling set to 100%.
 
-### CLI Reference
+<a id="cli-reference"></a>
+### 💻 CLI Reference
 
 You can invoke the CLI tool in three equivalent ways:
 
@@ -110,7 +126,7 @@ python -m file_upload_rpa [options] [file_path] [buttons ...]
 python file-upload-RPA.py [options] [file_path] [buttons ...]
 ```
 
-#### Arguments & Options
+#### ⚙️ Arguments & Options
 
 | Option / Argument | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
@@ -121,57 +137,59 @@ python file-upload-RPA.py [options] [file_path] [buttons ...]
 | `-v`, `--version` | Flag | *None* | Display installed package version and exit. |
 | `-h`, `--help` | Flag | *None* | Display command-line options and help manual. |
 
-### Usage Examples
+<a id="usage-examples"></a>
+### 💡 Usage Examples
 
-#### Example 1: Run with Defaults (Zero Arguments)
+#### 🔹 Example 1: Run with Defaults (Zero Arguments)
 Uses the default target file (`<cwd>\assets\social-preview.gif`) and default button templates:
 ```powershell
 file-upload-rpa
 ```
 
-#### Example 2: Custom Upload File with Default Buttons
+#### 🔹 Example 2: Custom Upload File with Default Buttons
 Specify the file path as the first positional argument:
 ```powershell
 file-upload-rpa "C:\Users\username\Pictures\avatar.png"
 ```
 
-#### Example 3: Custom File and Custom Button Sequence (Positional)
+#### 🔹 Example 3: Custom File and Custom Button Sequence (Positional)
 Pass the upload file first, followed by any number of button image paths:
 ```powershell
 file-upload-rpa "C:\documents\report.pdf" "assets\step1.png" "assets\step2.png"
 ```
 
-#### Example 4: Custom Buttons with Default File (Named Flag)
+#### 🔹 Example 4: Custom Buttons with Default File (Named Flag)
 Keep the default upload file, but supply custom button templates using `-b`:
 ```powershell
 file-upload-rpa --buttons "assets\click_upload.png" "assets\confirm_upload.png"
 ```
 
-#### Example 5: Full Named Flags (`-f` and `-b`)
+#### 🔹 Example 5: Full Named Flags (`-f` and `-b`)
 Explicitly label both the file path and button templates:
 ```powershell
 file-upload-rpa -f "C:\data\table.xlsx" -b "templates\btn1.png" "templates\btn2.png"
 ```
 
-#### Example 6: Single-Button Flow
+#### 🔹 Example 6: Single-Button Flow
 For dialogs requiring only a single click before the file chooser opens:
 ```powershell
 file-upload-rpa "C:\images\banner.jpg" "single_button.png"
 ```
 
-#### Example 7: Multi-Step Button Wizard (3+ Buttons)
+#### 🔹 Example 7: Multi-Step Button Wizard (3+ Buttons)
 For multi-step flows navigating through multiple screens:
 ```powershell
 file-upload-rpa "C:\archive.zip" "step1.png" "step2.png" "step3.png" "step4.png"
 ```
 
-#### Example 8: Check Version and Help
+#### 🔹 Example 8: Check Version and Help
 ```powershell
 file-upload-rpa --version
 file-upload-rpa --help
 ```
 
-### Python Library API
+<a id="python-library-api"></a>
+### 🐍 Python Library API
 
 You can also integrate `file-upload-rpa` into your own Python applications:
 
@@ -192,21 +210,23 @@ vision_upload_flow(
 )
 ```
 
-### Tips for Vision Matching
+<a id="tips-for-vision-matching"></a>
+### 🎯 Tips for Vision Matching
 
-1. **Display Scaling:** Set Windows display scaling to **100%** (Settings > Display > Scale) for maximum template recognition accuracy.
-2. **Crop Tight:** Crop button templates tightly around unique button borders or text, omitting large plain backgrounds.
-3. **Keep Target Window Unobscured:** Ensure the target window is completely visible and not covered by other windows during automation.
-4. **Theme Consistency:** If template screenshots were captured in dark mode, the browser must be in dark mode during execution (and vice versa).
+1. 📏 **Display Scaling:** Set Windows display scaling to **100%** (Settings > Display > Scale) for maximum template recognition accuracy.
+2. ✂️ **Crop Tight:** Crop button templates tightly around unique button borders or text, omitting large plain backgrounds.
+3. 🪟 **Keep Target Window Unobscured:** Ensure the target window is completely visible and not covered by other windows during automation.
+4. 🌓 **Theme Consistency:** If template screenshots were captured in dark mode, the browser must be in dark mode during execution (and vice versa).
 
-### Troubleshooting
+<a id="troubleshooting"></a>
+### 🔍 Troubleshooting
 
-- **`Error: Target file not found at <path>`:** The path provided does not exist on disk. Check for typos or verify the file path.
-- **`Error: Could not find the button <index>.<name> image on the screen.`:**
+- ❌ **Target File Not Found:** `Error: Target file not found at <path>`. The path provided does not exist on disk. Check for typos or verify the file path.
+- ⚠️ **Button Not Found on Screen:** `Error: Could not find the button <index>.<name> image on the screen.`
   - Verify Microsoft Edge is open and visible on screen.
   - Re-crop your button template image at your current monitor resolution.
   - Verify `opencv-python` is installed (`pip install opencv-python`).
-- **Edge window not focusing:** Ensure Microsoft Edge is running with "Edge" in its window title before running the script.
+- 🔄 **Edge Window Not Focusing:** Ensure Microsoft Edge is running with "Edge" in its window title before running the script.
 
 ---
 
@@ -214,13 +234,15 @@ vision_upload_flow(
 
 This section is for developers who want to set up the codebase locally, run tests, lint, and contribute changes.
 
-### Prerequisites
+<a id="prerequisites"></a>
+### 📋 Prerequisites
 
-- Python 3.8 or higher (Python 3.11+ recommended).
-- Git.
-- Windows environment (required for PyGetWindow and PyAutoGUI GUI automation).
+- 🐍 Python 3.8 or higher (Python 3.11+ recommended).
+- 🐙 Git.
+- 🪟 Windows environment (required for PyGetWindow and PyAutoGUI GUI automation).
 
-### Setting Up Local Development
+<a id="setting-up-local-development"></a>
+### 💻 Setting Up Local Development
 
 1. **Clone the repository:**
    ```powershell
@@ -241,7 +263,8 @@ This section is for developers who want to set up the codebase locally, run test
    pip install ruff build twine
    ```
 
-### Project Layout
+<a id="project-layout"></a>
+### 📂 Project Layout
 
 ```
 file-upload-rpa/
@@ -268,7 +291,8 @@ file-upload-rpa/
 └── README.md                      # Documentation
 ```
 
-### Code Quality & Linting
+<a id="code-quality--linting"></a>
+### 🧹 Code Quality & Linting
 
 This project uses [Ruff](https://github.com/astral-sh/ruff) for linting and code formatting:
 
@@ -286,7 +310,8 @@ ruff format --check src/ file-upload-RPA.py
 ruff format src/ file-upload-RPA.py
 ```
 
-### Testing Locally
+<a id="testing-locally"></a>
+### 🧪 Testing Locally
 
 1. **Verify CLI binary in editable mode:**
    ```powershell
@@ -305,7 +330,8 @@ ruff format src/ file-upload-RPA.py
    twine check --strict dist/*
    ```
 
-### Contributing Flow
+<a id="contributing-flow"></a>
+### 🤝 Contributing Flow
 
 1. Fork the repository and create your feature branch:
    ```powershell
@@ -326,7 +352,8 @@ ruff format src/ file-upload-RPA.py
 
 This section is for maintainers and DevOps engineers managing PyPI publishing and version releases.
 
-### Automated PyPI Publishing Overview
+<a id="automated-pypi-publishing-overview"></a>
+### 🔄 Automated PyPI Publishing Overview
 
 The repository is configured with an automated GitHub Actions pipeline in [`.github/workflows/publish.yml`](.github/workflows/publish.yml).
 
@@ -357,7 +384,8 @@ flowchart TD
 
 ---
 
-### How Automated Version Publishing Works
+<a id="how-automated-version-publishing-works"></a>
+### ⚙️ How Automated Version Publishing Works
 
 **Single Source of Truth:** The version in [`pyproject.toml`](pyproject.toml) controls releases:
 
@@ -371,11 +399,13 @@ Because [`src/file_upload_rpa/__version__.py`](src/file_upload_rpa/__version__.p
 
 ---
 
-### Configuring PyPI Authentication
+<a id="configuring-pypi-authentication"></a>
+### 🔐 Configuring PyPI Authentication
 
 You can authenticate with PyPI using either **Trusted Publishing (OIDC)** (recommended by PyPA) or a **PyPI API Token**.
 
-#### Option A: Trusted Publishing via OIDC (Recommended)
+<a id="option-a-trusted-publishing-via-oidc-recommended"></a>
+#### 🛡️ Option A: Trusted Publishing via OIDC (Recommended)
 PyPI Trusted Publishing allows GitHub Actions to publish without storing long-lived API tokens or passwords:
 
 1. Log in to [pypi.org](https://pypi.org/) and go to your account settings.
@@ -392,7 +422,8 @@ PyPI Trusted Publishing allows GitHub Actions to publish without storing long-li
      - **Environment name:** *(leave completely blank)*
 4. Click **Add publisher**. No GitHub Secrets are needed! The workflow automatically uses GitHub's OpenID Connect (`id-token: write`).
 
-#### Option B: PyPI API Token via GitHub Secrets
+<a id="option-b-pypi-api-token-via-github-secrets"></a>
+#### 🔑 Option B: PyPI API Token via GitHub Secrets
 If you prefer traditional API tokens:
 
 1. Log in to [pypi.org](https://pypi.org/) and go to **Account settings** > **API tokens**.
@@ -406,7 +437,8 @@ If you prefer traditional API tokens:
 
 ---
 
-### Step-by-Step Release Process
+<a id="step-by-step-release-process"></a>
+### 📝 Step-by-Step Release Process
 
 To release a new version of `file-upload-rpa`:
 
@@ -434,7 +466,8 @@ To release a new version of `file-upload-rpa`:
 
 ---
 
-### Manual Workflow Dispatch
+<a id="manual-workflow-dispatch"></a>
+### ⚡ Manual Workflow Dispatch
 
 You can also trigger a build manually from the GitHub UI:
 
@@ -445,7 +478,8 @@ You can also trigger a build manually from the GitHub UI:
 
 ---
 
-### Manual Local Publishing
+<a id="manual-local-publishing"></a>
+### 🖥️ Manual Local Publishing
 
 If you ever need to publish manually from your local machine:
 
@@ -477,6 +511,32 @@ If you ever need to publish manually from your local machine:
 
 ---
 
-## License
+<a id="star-history"></a>
+##  Star History
+
+[![Star History Chart](https://star-history.dera.page/svg?repos=ishandutta2007/file-upload-rpa&type=date&legend=top-left)](https://star-history.dera.page/#ishandutta2007/file-upload-rpa&type=date&legend=top-left)
+
+---
+
+<a id="support"></a>
+## 💖 Support & Community
+
+Thank you so much for exploring and using **File-Upload-RPA**! 🙏
+
+If this project made your automation easier, saved you time, or helped streamline your desktop workflows, please consider showing your support:
+
+- ⭐ **Star this repository** on GitHub to help boost visibility and reach more developers.
+- 🍴 **Fork & Contribute** bug fixes, new features, or custom template ideas.
+- 📢 **Share** with your network, team, or developer communities.
+- ☕ **Buy me a coffee / Sponsor**: If you'd like to support ongoing maintenance and new features, consider sponsoring on GitHub:
+
+  <a href="https://github.com/sponsors/ishandutta2007"><img src="https://img.shields.io/badge/Sponsor%20Me-GitHub%20Sponsors-ea4aaa?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Sponsors" /></a>
+
+  👉 Visit the [GitHub Sponsor Dashboard](https://github.com/sponsors/ishandutta2007) to support!
+
+---
+
+<a id="license"></a>
+## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
