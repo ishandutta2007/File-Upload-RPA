@@ -1,3 +1,4 @@
+import argparse
 import time
 import os
 import sys
@@ -56,12 +57,48 @@ def log_step(step_name, indent=0):
 
 
 # --- CONFIGURE YOUR PATHS ---
-# 1. Path to the file you want to upload
-FILE_PATH = (
-    sys.argv[1]
-    if len(sys.argv) > 1
-    else os.path.join(os.getcwd(), "assets", "social-preview.gif")
+DEFAULT_FILE_PATH = os.path.join(os.getcwd(), "assets", "social-preview.gif")
+DEFAULT_BUTTONS = ["upload_button1.png", "upload_button2.png"]
+
+parser = argparse.ArgumentParser(description="Vision-based file upload automation.")
+parser.add_argument(
+    "file_path",
+    nargs="?",
+    default=None,
+    help="Path to the file to upload (default: <cwd>\\assets\\social-preview.gif)",
 )
+parser.add_argument(
+    "buttons",
+    nargs="*",
+    default=None,
+    help="Paths to button template images to click in sequence (default: upload_button1.png upload_button2.png)",
+)
+parser.add_argument(
+    "-f",
+    "--file",
+    dest="file_opt",
+    default=None,
+    help="Path to the file to upload",
+)
+parser.add_argument(
+    "-b",
+    "--buttons",
+    dest="buttons_opt",
+    nargs="+",
+    default=None,
+    help="Paths to button template images to click in sequence",
+)
+
+args, _ = parser.parse_known_args()
+
+# 1. Path to the file you want to upload
+FILE_PATH = args.file_opt or args.file_path or DEFAULT_FILE_PATH
+
+# 2. Paths to button template images to click
+BUTTON_PATHS = (
+    args.buttons_opt or (args.buttons if args.buttons else None) or DEFAULT_BUTTONS
+)
+BUTTONS = BUTTON_PATHS
 
 windows = gw.getWindowsWithTitle("Edge")
 if windows:
@@ -72,7 +109,12 @@ if windows:
     log_info("Focused Microsoft Edge window.", indent=2)
 
 
-def vision_upload_flow():
+def vision_upload_flow(file_path=None, buttons=None):
+    if file_path is None:
+        file_path = FILE_PATH
+    if buttons is None:
+        buttons = BUTTON_PATHS
+
     print("Starting vision-based automation...")
     print("Please ensure the browser window is visible on your screen.")
     time.sleep(
@@ -80,8 +122,8 @@ def vision_upload_flow():
     )  # Give yourself 3 seconds to switch focus to the target screen if needed
 
     # Ensure the upload file exists locally before running
-    if not os.path.exists(FILE_PATH):
-        print(f"Error: Target file not found at {FILE_PATH}")
+    if not os.path.exists(file_path):
+        print(f"Error: Target file not found at {file_path}")
         sys.exit(1)
 
     # ----------------------------------------------------
@@ -89,22 +131,18 @@ def vision_upload_flow():
     # ----------------------------------------------------
     print("Searching for the upload button on screen...")
 
-    buttons = ["upload_button1.png", "upload_button2.png"]
-
-    for i in range(2):
+    for i, button in enumerate(buttons):
         try:
-            btn_location = pyautogui.locateOnScreen(buttons[i], confidence=0.8)
+            btn_location = pyautogui.locateOnScreen(button, confidence=0.8)
             if btn_location is None:
                 raise pyautogui.ImageNotFoundException
             print(f"Button found at: {btn_location}")
             btn_center = pyautogui.center(btn_location)
             pyautogui.click(btn_center)
-            print(f"Clicked button {i}.{buttons[i]}.")
+            print(f"Clicked button {i}.{button}.")
 
         except (pyautogui.ImageNotFoundException, TypeError):
-            print(
-                f"Error: Could not find the button {i}.{buttons[i]} image on the screen."
-            )
+            print(f"Error: Could not find the button {i}.{button} image on the screen.")
             print(
                 "Make sure the button is completely visible and looks identical to your template image."
             )
@@ -117,9 +155,9 @@ def vision_upload_flow():
     # Pause to allow the file manager dialog box to open up completely
     time.sleep(4)
 
-    print(f"Typing file path: {FILE_PATH}")
+    print(f"Typing file path: {file_path}")
     # Type out the absolute file path into the file dialog's active filename input field
-    pyautogui.write(FILE_PATH, interval=0.01)
+    pyautogui.write(file_path, interval=0.01)
     time.sleep(0.5)
 
     # Press 'enter' to confirm and close the file dialogue box, submitting the file
