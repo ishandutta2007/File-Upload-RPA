@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-and-build:
+    name: Lint & Build Validation
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff build twine
+          pip install -r requirements.txt
+
+      - name: Run Ruff Linter
+        run: |
+          ruff check src/ file-upload-RPA.py
+
+      - name: Run Ruff Formatter Check
+        run: |
+          ruff format --check src/ file-upload-RPA.py
+
+      - name: Build distributions
+        run: |
+          python -m build
+
+      - name: Validate distributions with Twine
+        run: |
+          twine check --strict dist/*

@@ -1,0 +1,152 @@
+name: Publish to PyPI
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      force_publish:
+        description: "Force publish even if version already exists on PyPI"
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: pypi-publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  check-version:
+    name: Check Package Version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+      should_publish: ${{ steps.check_pypi.outputs.should_publish }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Extract version from pyproject.toml
+        id: get_version
+        run: |
+          python - << 'EOF'
+          import tomllib
+          import os
+
+          with open("pyproject.toml", "rb") as f:
+              data = tomllib.load(f)
+          version = data["project"]["version"]
+          print(f"Detected version in pyproject.toml: {version}")
+
+          with open(os.environ["GITHUB_OUTPUT"], "a") as gh_out:
+              gh_out.write(f"version={version}\n")
+          EOF
+
+      - name: Check if version is already published on PyPI
+        id: check_pypi
+        run: |
+          python - << 'EOF'
+          import os
+          import sys
+          import urllib.request
+          import urllib.error
+
+          version = "${{ steps.get_version.outputs.version }}"
+          force = "${{ github.event.inputs.force_publish }}" == "true"
+
+          if force:
+              print("Force publish requested via manual workflow dispatch.")
+              with open(os.environ["GITHUB_OUTPUT"], "a") as gh_out:
+                  gh_out.write("should_publish=true\n")
+              sys.exit(0)
+
+          url = f"https://pypi.org/pypi/file-upload-rpa/{version}/json"
+          req = urllib.request.Request(url, headers={"User-Agent": "file-upload-rpa-ci-check"})
+
+          try:
+              with urllib.request.urlopen(req) as resp:
+                  if resp.status == 200:
+                      print(f"::notice::Version {version} is ALREADY published on PyPI. Skipping publishing.")
+                      with open(os.environ["GITHUB_OUTPUT"], "a") as gh_out:
+                          gh_out.write("should_publish=false\n")
+          except urllib.error.HTTPError as e:
+              if e.code == 404:
+                  print(f"::notice::Version {version} is NOT on PyPI yet. Proceeding with publish!")
+                  with open(os.environ["GITHUB_OUTPUT"], "a") as gh_out:
+                      gh_out.write("should_publish=true\n")
+              else:
+                  print(f"Unexpected HTTP status {e.code} checking PyPI: {e.reason}")
+                  sys.exit(1)
+          except Exception as e:
+              print(f"Error checking PyPI: {e}")
+              sys.exit(1)
+          EOF
+
+  publish:
+    name: Build and Publish to PyPI
+    needs: check-version
+    if: needs.check-version.outputs.should_publish == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/file-upload-rpa
+    permissions:
+      contents: write       # Required to create git tags and GitHub releases
+      id-token: write       # Required for PyPI Trusted Publishing (OIDC)
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install build and validation tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+
+      - name: Build sdist and wheel
+        run: |
+          python -m build
+
+      - name: Validate distribution artifacts
+        run: |
+          twine check --strict dist/*
+
+      - name: Publish to PyPI (via API Token if configured)
+        if: "${{ env.PYPI_TOKEN != '' }}"
+        env:
+          PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+
+      - name: Publish to PyPI (via Trusted Publishing / OIDC)
+        if: "${{ env.PYPI_TOKEN == '' }}"
+        env:
+          PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+      - name: Create Git Tag and GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "v${{ needs.check-version.outputs.version }}"
+          name: "Release v${{ needs.check-version.outputs.version }}"
+          body: |
+            Automated release of **file-upload-rpa** version `${{ needs.check-version.outputs.version }}`.
+            
+            Published to PyPI: https://pypi.org/project/file-upload-rpa/${{ needs.check-version.outputs.version }}/
+          files: dist/*
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
