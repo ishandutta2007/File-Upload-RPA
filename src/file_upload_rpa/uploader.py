@@ -142,13 +142,13 @@ def vision_upload_flow(file_path=None, buttons=None, focus_window=True):
                 "Make sure the button is completely visible and looks identical to your template image."
             )
             return
-        time.sleep(4)
+        time.sleep(2)
 
     # ----------------------------------------------------
     # STEP 2: Interact with the OS File Dialogue Window
     # ----------------------------------------------------
     # Pause to allow the file manager dialog box to open up completely
-    time.sleep(4)
+    time.sleep(3)
 
     print(f"Typing file path: {file_path}")
     # Type out the absolute file path into the file dialog's active filename input field
